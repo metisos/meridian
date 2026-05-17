@@ -30,6 +30,13 @@ env:
   - variable: MONGODB_DB
     value: meridian_db
     availability: [RUNTIME]
+  # GCP project ID — already visible in the public Cloud Run hostname
+  # (meridian-control-center--meridian-metisos.us-central1.hosted.app), so
+  # storing it in plaintext leaks nothing extra. Cloud Run does NOT auto-set
+  # GOOGLE_CLOUD_PROJECT, so the Vertex AI SDK needs this explicitly.
+  - variable: GCP_PROJECT
+    value: meridian-metisos
+    availability: [RUNTIME]
 
   # ─── Infrastructure pointers (bound from Secret Manager) ────────────────
   # Treated as semi-sensitive because they reveal our tenant + endpoints.
