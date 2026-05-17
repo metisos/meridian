@@ -44,6 +44,12 @@ function flatten(node: ReactNode): string {
   return "";
 }
 
+/* The Run-in-Splunk button only renders when the Splunk Web UI is reachable
+   from the user's browser. In our production environment Splunk's port 8000
+   is firewalled, so we hide the button there — the agent has already run the
+   query and rendered the results inline. */
+const SHOW_RUN_IN_SPLUNK = process.env.NODE_ENV !== "production";
+
 function SplBlock({ source }: { source: string }) {
   const clean = source.trim();
   const splunkUrl = `${SPLUNK_REDIRECT_PATH}?q=${encodeURIComponent(clean)}`;
@@ -101,25 +107,27 @@ function SplBlock({ source }: { source: string }) {
         >
           Copy
         </button>
-        <a
-          href={splunkUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            padding: "2px 8px",
-            background: "var(--accent)",
-            color: "var(--accent-text)",
-            border: "none",
-            borderRadius: 3,
-            fontSize: 9.5,
-            fontWeight: 700,
-            textDecoration: "none",
-            letterSpacing: 0.4,
-            textTransform: "uppercase",
-          }}
-        >
-          Run in Splunk →
-        </a>
+        {SHOW_RUN_IN_SPLUNK && (
+          <a
+            href={splunkUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              padding: "2px 8px",
+              background: "var(--accent)",
+              color: "var(--accent-text)",
+              border: "none",
+              borderRadius: 3,
+              fontSize: 9.5,
+              fontWeight: 700,
+              textDecoration: "none",
+              letterSpacing: 0.4,
+              textTransform: "uppercase",
+            }}
+          >
+            Run in Splunk →
+          </a>
+        )}
       </div>
       <pre
         className="mono scroll"
