@@ -11,6 +11,14 @@ runConfig:
   minInstances: 0
   maxInstances: 10
   concurrency: 80
+  # Route all egress through the meridian-egress Serverless VPC connector so
+  # we can reach the Splunk MCP server on its internal VPC IP. Without this,
+  # Cloud Run egresses from Google's public NAT pool which is blocked at the
+  # GCE firewall on the Splunk VM. ALL_TRAFFIC also keeps MongoDB Atlas
+  # (public) reachable through Cloud NAT on the same VPC.
+  vpcAccess:
+    egress: ALL_TRAFFIC
+    connector: projects/meridian-metisos/locations/us-central1/connectors/meridian-egress
 
 env:
   # ─── Non-sensitive runtime config ───────────────────────────────────────
