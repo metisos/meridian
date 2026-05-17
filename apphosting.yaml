@@ -11,13 +11,13 @@ runConfig:
   minInstances: 0
   maxInstances: 10
   concurrency: 80
-  # Route all egress through the meridian-egress Serverless VPC connector so
-  # we can reach the Splunk MCP server on its internal VPC IP. Without this,
-  # Cloud Run egresses from Google's public NAT pool which is blocked at the
-  # GCE firewall on the Splunk VM. ALL_TRAFFIC also keeps MongoDB Atlas
-  # (public) reachable through Cloud NAT on the same VPC.
+  # Route private-IP traffic (10.x.x.x / 172.16.x.x / 192.168.x.x) through
+  # the meridian-egress Serverless VPC connector — that's how Cloud Run reaches
+  # the Splunk VM at its internal IP without exposing port 8089 publicly.
+  # Public-internet traffic (MongoDB Atlas, Vertex AI) continues to use Cloud
+  # Run's default egress, which doesn't require Cloud NAT setup.
   vpcAccess:
-    egress: ALL_TRAFFIC
+    egress: PRIVATE_RANGES_ONLY
     connector: projects/meridian-metisos/locations/us-central1/connectors/meridian-egress
 
 env:
