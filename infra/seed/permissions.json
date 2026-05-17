@@ -1,0 +1,42 @@
+[
+  {
+    "actor_id": "agent-meridian-ingest",
+    "artifact_pattern": "ctx://meridian/splunk-events/*",
+    "operations": ["write"]
+  },
+  {
+    "actor_id": "agent-meridian-stamper",
+    "artifact_pattern": "ctx://meridian/splunk-events/*",
+    "operations": ["write"]
+  },
+  {
+    "actor_id": "agent-meridian-reasoner",
+    "artifact_pattern": "ctx://meridian/**",
+    "operations": ["read"]
+  },
+  {
+    "actor_id": "agent-meridian-reasoner",
+    "artifact_pattern": "ctx://meridian/investigations/*",
+    "operations": ["read", "write"]
+  },
+  {
+    "actor_id": "agent-meridian-reasoner",
+    "artifact_pattern": "ctx://meridian/memory/*",
+    "operations": ["read", "write"]
+  },
+  {
+    "actor_id": "human-ciso",
+    "artifact_pattern": "ctx://meridian/**",
+    "operations": ["admin"]
+  },
+  {
+    "actor_id": "human-analyst",
+    "artifact_pattern": "ctx://meridian/**",
+    "operations": ["read"]
+  },
+  {
+    "agent_class": "compliance-monitor",
+    "artifact_pattern": "ctx://meridian/compliance/*",
+    "operations": ["read"]
+  }
+]

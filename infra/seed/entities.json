@@ -1,0 +1,322 @@
+[
+  {
+    "uri": "ctx://meridian/entities/server/prod-db-01",
+    "entity_type": "server",
+    "name": "prod-db-01",
+    "metadata": { "region": "us-central1", "zone": "us-central1-a", "team": "platform", "rack": "r12", "role": "postgres-primary" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/service/payment-svc", "relation": "hosts" },
+      { "target_uri": "ctx://meridian/entities/service/recommendation-svc", "relation": "hosts" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/server/prod-db-02",
+    "entity_type": "server",
+    "name": "prod-db-02",
+    "metadata": { "region": "us-central1", "zone": "us-central1-b", "team": "platform", "rack": "r12", "role": "postgres-replica" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/server/prod-db-01", "relation": "replicates_from" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/server/prod-db-03",
+    "entity_type": "server",
+    "name": "prod-db-03",
+    "metadata": { "region": "us-central1", "zone": "us-central1-a", "team": "platform", "rack": "r12", "role": "postgres-primary" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/service/service-a", "relation": "hosts" },
+      { "target_uri": "ctx://meridian/entities/service/service-b", "relation": "hosts" },
+      { "target_uri": "ctx://meridian/sla/alpha-999", "relation": "bound_by" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/server/prod-db-04",
+    "entity_type": "server",
+    "name": "prod-db-04",
+    "metadata": { "region": "us-east1", "zone": "us-east1-b", "team": "platform", "rack": "r05", "role": "postgres-primary" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/service/search-svc", "relation": "hosts" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/server/web-01",
+    "entity_type": "server",
+    "name": "web-01",
+    "metadata": { "region": "us-central1", "zone": "us-central1-a", "team": "platform", "role": "web-frontend" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/service/service-a", "relation": "depends_on" },
+      { "target_uri": "ctx://meridian/entities/service/auth-svc", "relation": "depends_on" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/server/web-02",
+    "entity_type": "server",
+    "name": "web-02",
+    "metadata": { "region": "us-central1", "zone": "us-central1-b", "team": "platform", "role": "web-frontend" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/service/service-a", "relation": "depends_on" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/server/web-03",
+    "entity_type": "server",
+    "name": "web-03",
+    "metadata": { "region": "us-east1", "zone": "us-east1-b", "team": "platform", "role": "web-frontend" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/service/search-svc", "relation": "depends_on" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/server/auth-svc-01",
+    "entity_type": "server",
+    "name": "auth-svc-01",
+    "metadata": { "region": "us-central1", "zone": "us-central1-a", "team": "security", "role": "auth-primary" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/service/auth-svc", "relation": "hosts" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/server/auth-svc-02",
+    "entity_type": "server",
+    "name": "auth-svc-02",
+    "metadata": { "region": "us-east1", "zone": "us-east1-b", "team": "security", "role": "auth-secondary" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/service/auth-svc", "relation": "hosts" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/server/iam-svc-01",
+    "entity_type": "server",
+    "name": "iam-svc-01",
+    "metadata": { "region": "us-central1", "zone": "us-central1-a", "team": "security", "role": "iam-primary" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/compliance/soc2-incident-reporting", "relation": "governed_by" },
+      { "target_uri": "ctx://meridian/compliance/pci-dss-req-10", "relation": "governed_by" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/server/firewall-edge-01",
+    "entity_type": "server",
+    "name": "firewall-edge-01",
+    "metadata": { "region": "us-central1", "zone": "us-central1-a", "team": "network", "role": "edge-firewall" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/compliance/pci-dss-req-10", "relation": "governed_by" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/server/cdn-edge-01",
+    "entity_type": "server",
+    "name": "cdn-edge-01",
+    "metadata": { "region": "us-central1", "team": "platform", "role": "cdn-edge" },
+    "relationships": []
+  },
+  {
+    "uri": "ctx://meridian/entities/server/cdn-edge-02",
+    "entity_type": "server",
+    "name": "cdn-edge-02",
+    "metadata": { "region": "us-east1", "team": "platform", "role": "cdn-edge" },
+    "relationships": []
+  },
+  {
+    "uri": "ctx://meridian/entities/server/data-api-01",
+    "entity_type": "server",
+    "name": "data-api-01",
+    "metadata": { "region": "us-central1", "zone": "us-central1-a", "team": "platform", "role": "data-api" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/server/prod-db-01", "relation": "depends_on" }
+    ]
+  },
+
+  {
+    "uri": "ctx://meridian/entities/service/service-a",
+    "entity_type": "service",
+    "name": "service-a",
+    "metadata": { "owner": "platform", "tier": "critical" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/client/client-alpha", "relation": "serves" },
+      { "target_uri": "ctx://meridian/entities/client/client-beta", "relation": "serves" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/service/service-b",
+    "entity_type": "service",
+    "name": "service-b",
+    "metadata": { "owner": "platform", "tier": "standard" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/client/client-alpha", "relation": "serves" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/service/auth-svc",
+    "entity_type": "service",
+    "name": "auth-svc",
+    "metadata": { "owner": "security", "tier": "critical" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/client/client-alpha", "relation": "serves" },
+      { "target_uri": "ctx://meridian/entities/client/client-beta", "relation": "serves" },
+      { "target_uri": "ctx://meridian/entities/client/client-gamma", "relation": "serves" },
+      { "target_uri": "ctx://meridian/entities/client/client-delta", "relation": "serves" },
+      { "target_uri": "ctx://meridian/entities/client/client-epsilon", "relation": "serves" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/service/payment-svc",
+    "entity_type": "service",
+    "name": "payment-svc",
+    "metadata": { "owner": "platform", "tier": "critical" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/client/client-alpha", "relation": "serves" },
+      { "target_uri": "ctx://meridian/compliance/pci-dss-req-10", "relation": "governed_by" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/service/search-svc",
+    "entity_type": "service",
+    "name": "search-svc",
+    "metadata": { "owner": "platform", "tier": "standard" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/client/client-beta", "relation": "serves" },
+      { "target_uri": "ctx://meridian/entities/client/client-gamma", "relation": "serves" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/service/recommendation-svc",
+    "entity_type": "service",
+    "name": "recommendation-svc",
+    "metadata": { "owner": "platform", "tier": "standard" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/client/client-alpha", "relation": "serves" },
+      { "target_uri": "ctx://meridian/entities/client/client-delta", "relation": "serves" }
+    ]
+  },
+
+  {
+    "uri": "ctx://meridian/entities/client/client-alpha",
+    "entity_type": "client",
+    "name": "client-alpha",
+    "metadata": { "contract_tier": "enterprise", "csm": "team-east", "industry": "fintech" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/sla/alpha-999", "relation": "bound_by" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/client/client-beta",
+    "entity_type": "client",
+    "name": "client-beta",
+    "metadata": { "contract_tier": "enterprise", "csm": "team-east", "industry": "retail" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/sla/beta-995", "relation": "bound_by" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/client/client-gamma",
+    "entity_type": "client",
+    "name": "client-gamma",
+    "metadata": { "contract_tier": "premium", "csm": "team-west", "industry": "healthcare" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/sla/gamma-9999", "relation": "bound_by" },
+      { "target_uri": "ctx://meridian/compliance/hipaa-baa", "relation": "governed_by" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/client/client-delta",
+    "entity_type": "client",
+    "name": "client-delta",
+    "metadata": { "contract_tier": "standard", "csm": "team-west", "industry": "media" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/sla/delta-990", "relation": "bound_by" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/entities/client/client-epsilon",
+    "entity_type": "client",
+    "name": "client-epsilon",
+    "metadata": { "contract_tier": "enterprise", "csm": "team-east", "industry": "logistics" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/sla/epsilon-9995", "relation": "bound_by" },
+      { "target_uri": "ctx://meridian/compliance/gdpr-breach-72h", "relation": "governed_by" }
+    ]
+  },
+
+  { "uri": "ctx://meridian/sla/alpha-999",     "entity_type": "sla", "name": "Alpha 99.9% Uptime SLA",      "metadata": { "uptime_target": "99.9%",   "credit_window_hours": 72 }, "relationships": [] },
+  { "uri": "ctx://meridian/sla/beta-995",      "entity_type": "sla", "name": "Beta 99.5% Uptime SLA",       "metadata": { "uptime_target": "99.5%",   "credit_window_hours": 24 }, "relationships": [] },
+  { "uri": "ctx://meridian/sla/gamma-9999",    "entity_type": "sla", "name": "Gamma 99.99% Uptime SLA",     "metadata": { "uptime_target": "99.99%",  "credit_window_hours": 168 }, "relationships": [] },
+  { "uri": "ctx://meridian/sla/delta-990",     "entity_type": "sla", "name": "Delta 99.0% Uptime SLA",      "metadata": { "uptime_target": "99.0%",   "credit_window_hours": 24 }, "relationships": [] },
+  { "uri": "ctx://meridian/sla/epsilon-9995",  "entity_type": "sla", "name": "Epsilon 99.95% Uptime SLA",   "metadata": { "uptime_target": "99.95%",  "credit_window_hours": 72 }, "relationships": [] },
+
+  {
+    "uri": "ctx://meridian/compliance/soc2-incident-reporting",
+    "entity_type": "compliance",
+    "name": "SOC 2 Incident Reporting",
+    "metadata": { "framework": "SOC 2", "reporting_window_hours": 72 },
+    "relationships": []
+  },
+  {
+    "uri": "ctx://meridian/compliance/gdpr-breach-72h",
+    "entity_type": "compliance",
+    "name": "GDPR Article 33 Breach Notification (72h)",
+    "metadata": { "framework": "GDPR", "reporting_window_hours": 72 },
+    "relationships": []
+  },
+  {
+    "uri": "ctx://meridian/compliance/pci-dss-req-10",
+    "entity_type": "compliance",
+    "name": "PCI DSS Requirement 10 (Log + Monitor)",
+    "metadata": { "framework": "PCI DSS v4", "evidence_retention_months": 12 },
+    "relationships": []
+  },
+  {
+    "uri": "ctx://meridian/compliance/hipaa-baa",
+    "entity_type": "compliance",
+    "name": "HIPAA Business Associate Agreement",
+    "metadata": { "framework": "HIPAA", "covered_data": "PHI" },
+    "relationships": []
+  },
+
+  {
+    "uri": "ctx://meridian/runbooks/rb-db-failover",
+    "entity_type": "runbook",
+    "name": "Database Failover Runbook",
+    "metadata": { "owner": "platform", "last_reviewed": "2026-04-15" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/server/prod-db-03", "relation": "applies_to" },
+      { "target_uri": "ctx://meridian/entities/server/prod-db-01", "relation": "applies_to" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/runbooks/rb-deploy-rollback",
+    "entity_type": "runbook",
+    "name": "Deploy Rollback Runbook",
+    "metadata": { "owner": "platform", "last_reviewed": "2026-03-20" },
+    "relationships": []
+  },
+  {
+    "uri": "ctx://meridian/runbooks/rb-auth-incident",
+    "entity_type": "runbook",
+    "name": "Authentication Incident Response",
+    "metadata": { "owner": "security", "last_reviewed": "2026-04-30" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/service/auth-svc", "relation": "applies_to" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/runbooks/rb-ddos-mitigation",
+    "entity_type": "runbook",
+    "name": "DDoS Mitigation Playbook",
+    "metadata": { "owner": "network", "last_reviewed": "2026-05-01" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/entities/server/firewall-edge-01", "relation": "applies_to" },
+      { "target_uri": "ctx://meridian/entities/server/cdn-edge-01", "relation": "applies_to" }
+    ]
+  },
+  {
+    "uri": "ctx://meridian/runbooks/rb-exfil-response",
+    "entity_type": "runbook",
+    "name": "Data Exfiltration Response",
+    "metadata": { "owner": "security", "last_reviewed": "2026-04-10" },
+    "relationships": [
+      { "target_uri": "ctx://meridian/compliance/gdpr-breach-72h", "relation": "applies_to" },
+      { "target_uri": "ctx://meridian/compliance/soc2-incident-reporting", "relation": "applies_to" }
+    ]
+  }
+]

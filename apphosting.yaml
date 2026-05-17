@@ -1,0 +1,58 @@
+# Firebase App Hosting — Next.js SSR backend for the Meridian Control Center.
+# https://firebase.google.com/docs/app-hosting/configure
+#
+# Every infrastructure-identifying value lives in Google Secret Manager.
+# This file is public — it MUST NOT contain real hostnames, usernames,
+# project IDs, or other operational identifiers.
+
+runConfig:
+  cpu: 1
+  memoryMiB: 1024
+  minInstances: 0
+  maxInstances: 10
+  concurrency: 80
+
+env:
+  # ─── Non-sensitive runtime config ───────────────────────────────────────
+  # These are protocol/version identifiers, not infrastructure pointers.
+  - variable: GEMINI_BACKEND
+    value: vertex
+    availability: [RUNTIME]
+  - variable: GEMINI_MODEL
+    value: gemini-3.1-pro-preview
+    availability: [RUNTIME]
+  - variable: VERTEX_LOCATION
+    value: global
+    availability: [RUNTIME]
+  - variable: MONGODB_APP_NAME
+    value: Cluster0
+    availability: [RUNTIME]
+  - variable: MONGODB_DB
+    value: meridian_db
+    availability: [RUNTIME]
+
+  # ─── Infrastructure pointers (bound from Secret Manager) ────────────────
+  # Treated as semi-sensitive because they reveal our tenant + endpoints.
+  - variable: MONGODB_USER
+    secret: MONGODB_USER
+    availability: [RUNTIME]
+  - variable: MONGODB_HOST
+    secret: MONGODB_HOST
+    availability: [RUNTIME]
+  - variable: SPLUNK_BASE_URL
+    secret: SPLUNK_BASE_URL
+    availability: [RUNTIME]
+  - variable: SPLUNK_WEB_URL
+    secret: SPLUNK_WEB_URL
+    availability: [RUNTIME]
+
+  # ─── True secrets ───────────────────────────────────────────────────────
+  - variable: MONGODB_PASSWORD
+    secret: MONGODB_PASSWORD
+    availability: [RUNTIME]
+  - variable: SPLUNK_MCP_TOKEN
+    secret: SPLUNK_MCP_TOKEN
+    availability: [RUNTIME]
+
+# GCP project ID is injected by Cloud Run as GOOGLE_CLOUD_PROJECT — the
+# Vertex AI SDK picks it up automatically. We do NOT hardcode it here.

@@ -1,0 +1,230 @@
+/* Meridian — design tokens.
+   Supabase-style: near-monochrome charcoal/slate canvas + emerald accent.
+   Severity colors (red/amber) reserved exclusively for severity.
+   Brand emerald also serves as the "stable / ok" affirmative state.         */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+:root,
+[data-theme="dark"] {
+  /* Backgrounds — near-monochrome charcoal */
+  --bg-0: #171717;     /* page canvas */
+  --bg-1: #1c1c1c;     /* card / panel */
+  --bg-2: #232323;     /* sunken row */
+  --bg-3: #2a2a2a;     /* hover / selected */
+
+  /* Borders — quiet, geometric */
+  --bd-1: #262626;
+  --bd-2: #353535;
+  --bd-3: #4a4a4a;
+
+  /* Text — neutral grays */
+  --fg-0: #ededed;
+  --fg-1: #b3b3b3;
+  --fg-2: #8a8a8a;
+  --fg-3: #5e5e5e;
+  --fg-4: #3f3f3f;
+
+  /* Primary accent — Supabase signature emerald.
+     Used for brand glyph, primary CTA, links, focus, and the "stable" state. */
+  --accent: #3ecf8e;
+  --accent-2: #5cdba8;
+  --accent-soft: rgba(62, 207, 142, 0.10);
+  --accent-bd: rgba(62, 207, 142, 0.28);
+  --accent-text: #0a1f15;
+
+  /* Severity scale — reserved exclusively for severity indicators */
+  --info: #6b9eea;
+  --info-soft: rgba(107, 158, 234, 0.10);
+  --ok: #3ecf8e;
+  --ok-soft: rgba(62, 207, 142, 0.10);
+  --warn: #e0a93b;
+  --warn-soft: rgba(224, 169, 59, 0.10);
+  --crit: #e85959;
+  --crit-soft: rgba(232, 89, 89, 0.10);
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+  --scrim: rgba(23, 23, 23, 0.78);
+}
+
+[data-theme="light"] {
+  /* Backgrounds — neutral gray canvas (NOT cream, NOT pure white).
+     Cards float as pure white against a gray canvas — gives the layout weight. */
+  --bg-0: #f1f1f1;     /* page canvas — visible gray, not washed out */
+  --bg-1: #ffffff;     /* card */
+  --bg-2: #f5f5f5;     /* sunken row */
+  --bg-3: #e8e8e8;     /* hover */
+
+  /* Borders — crisp neutral */
+  --bd-1: #e2e2e2;
+  --bd-2: #cccccc;
+  --bd-3: #999999;
+
+  /* Text — true charcoal */
+  --fg-0: #171717;
+  --fg-1: #3a3a3a;
+  --fg-2: #5f5f5f;
+  --fg-3: #8a8a8a;
+  --fg-4: #b5b5b5;
+
+  /* Accent — deeper emerald for AA contrast on white */
+  --accent: #168954;
+  --accent-2: #0d5e3a;
+  --accent-soft: rgba(22, 137, 84, 0.08);
+  --accent-bd: rgba(22, 137, 84, 0.30);
+  --accent-text: #ffffff;
+
+  --info: #1f5fb8;
+  --info-soft: rgba(31, 95, 184, 0.06);
+  --ok: #168954;
+  --ok-soft: rgba(22, 137, 84, 0.08);
+  --warn: #a06a18;
+  --warn-soft: rgba(160, 106, 24, 0.08);
+  --crit: #b13838;
+  --crit-soft: rgba(177, 56, 56, 0.06);
+
+  --shadow-1: 0 1px 2px rgba(15, 15, 15, 0.04);
+  --shadow-2: 0 12px 30px rgba(15, 15, 15, 0.08), 0 2px 8px rgba(15, 15, 15, 0.04);
+
+  --scrim: rgba(241, 241, 241, 0.85);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-feature-settings: "ss01" 1, "cv11" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  color: var(--fg-0);
+  background: var(--bg-0);
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+  color: inherit;
+}
+
+a { color: inherit; }
+
+.mono {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  font-feature-settings: "zero" 1;
+}
+
+.overline {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--fg-2);
+}
+
+.overline-accent {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll::-webkit-scrollbar-track { background: transparent; }
+.scroll::-webkit-scrollbar-thumb { background: var(--bd-2); border-radius: 4px; }
+.scroll::-webkit-scrollbar-thumb:hover { background: var(--bd-3); }
+
+/* Inline citation pill — green tag rendered for [inv_…] references in agent
+   output. Clickable variant deep-links into the Incidents tab with the
+   investigation pre-selected. */
+.citation-pill {
+  display: inline-block;
+  padding: 1px 6px;
+  margin: 0 2px;
+  font-size: 10.5px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-bd);
+  border-radius: 3px;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+a.citation-pill {
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+a.citation-pill:hover {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+a.citation-pill:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Blast-radius entity row — clickable, hovers to a soft accent background
+   and reveals the trailing arrow as a drill-in affordance. */
+.entity-row:hover {
+  background: var(--accent-soft);
+}
+.entity-row:hover .entity-row-arrow {
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* Methodology card on the lobby — hover lifts the border and tints the
+   "Read more →" affordance accent. */
+.method-card:hover {
+  border-color: var(--accent-bd);
+  background: var(--bg-2);
+}
+.method-card:hover .method-arrow {
+  color: var(--accent);
+}
+
+/* Source card on the Ask page — clickable drill into /app/incidents. */
+.source-card:hover {
+  background: var(--bg-3);
+  border-color: var(--accent-bd);
+}
+.source-card:hover .source-card-arrow {
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* Risk Map inspector — clickable rows in the right rail. */
+.inspector-row:hover {
+  border-color: var(--accent-bd);
+  background: var(--bg-3);
+}
+.riskmap-sidebar-row:hover {
+  background: var(--bg-3);
+}
+
+/* Right-rail splitter — drag to resize the rail. */
+.rail-splitter:hover .rail-splitter-grip,
+.rail-splitter:active .rail-splitter-grip {
+  background: var(--accent);
+}
+
+/* Canvas export dropdown menu items. */
+.export-menu-item + .export-menu-item {
+  border-top: 1px solid var(--bd-1);
+}
+.export-menu-item:hover {
+  background: var(--accent-soft);
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.live-dot { animation: live-pulse 2.2s ease-in-out infinite; }
+
+@keyframes live-rotate {
+  to { transform: rotate(360deg); }
+}

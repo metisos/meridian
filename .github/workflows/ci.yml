@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  safety:
+    name: Public-safety scanner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Full history so the scanner can diff against base
+
+      # The scanner has no Node deps — just bash + grep + git. Runs in seconds.
+      - name: Run pre-push secret scanner
+        run: bash scripts/check-public-safety.sh --working
+
+  typecheck:
+    name: Typecheck + build
+    runs-on: ubuntu-latest
+    needs: safety
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck control-center
+        run: pnpm --filter @meridian/control-center typecheck
+
+      - name: Typecheck CLI
+        run: pnpm --filter @meridian/cli typecheck
+
+      - name: Build control-center
+        run: pnpm --filter @meridian/control-center build
+        env:
+          # Build-time only: NEXT_PUBLIC_* must be present, others are runtime-only.
+          NEXT_PUBLIC_SPLUNK_WEB_URL: https://splunk.example.com:8000
+          # The Next build never connects to MongoDB or Vertex, but our lib/env.ts
+          # uses lazy getters so missing-at-build is fine.
+
+      - name: Test packages
+        run: pnpm -r --if-present test

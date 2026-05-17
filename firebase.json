@@ -1,0 +1,19 @@
+{
+  "apphosting": {
+    "backendId": "meridian-control-center",
+    "rootDir": ".",
+    "ignore": [
+      "node_modules",
+      ".next",
+      ".turbo",
+      "docs",
+      ".rosetta",
+      "ROSETTA.md",
+      ".env*",
+      ".aider.conf.yml",
+      "design",
+      "Meridian-handoff.zip",
+      "Capture.PNG"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+name: Deploy to Firebase App Hosting
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write   # Required for Workload Identity Federation
+
+jobs:
+  deploy:
+    name: Deploy control-center
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://meridian.metisos.co
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Authenticate to GCP using Workload Identity Federation — no JSON keys.
+      # GCP_WIF_PROVIDER and GCP_SERVICE_ACCOUNT come from repo secrets.
+      # See: https://github.com/google-github-actions/auth#setting-up-workload-identity-federation
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Trigger Firebase App Hosting rollout
+        # App Hosting builds from the connected GitHub repo automatically on
+        # push, but we can also trigger a rollout explicitly so the workflow
+        # waits for build/deploy to finish before marking success.
+        run: |
+          gcloud beta firebase apphosting backends rollouts create \
+            --backend=meridian-control-center \
+            --project=${{ secrets.FIREBASE_PROJECT_ID }} \
+            --location=us-central1 \
+            --git-branch=main
+        env:
+          CLOUDSDK_CORE_DISABLE_PROMPTS: "1"

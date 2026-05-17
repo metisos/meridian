@@ -1,0 +1,32 @@
+[
+  {
+    "actor_id": "agent-meridian-ingest",
+    "actor_type": "agent",
+    "name": "Meridian Ingest Pipeline",
+    "agent_class": "data-ingestion"
+  },
+  {
+    "actor_id": "agent-meridian-stamper",
+    "actor_type": "agent",
+    "name": "Meridian USC Stamper",
+    "agent_class": "usc-stamper"
+  },
+  {
+    "actor_id": "agent-meridian-reasoner",
+    "actor_type": "agent",
+    "name": "Meridian Reasoning Agent (Gemini 3)",
+    "agent_class": "incident-investigator"
+  },
+  {
+    "actor_id": "human-ciso",
+    "actor_type": "human",
+    "name": "CISO",
+    "agent_class": null
+  },
+  {
+    "actor_id": "human-analyst",
+    "actor_type": "human",
+    "name": "SOC Analyst",
+    "agent_class": null
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "name": "@meridian/control-center",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@google/genai": "^2.3.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "docx": "^9.6.1",
+    "mammoth": "^1.12.0",
+    "marked": "^18.0.3",
+    "mongodb": "^6.12.0",
+    "next": "^16.2.6",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "undici": "^7.25.0"
+  },
+  "devDependencies": {
+    "@types/marked": "^6.0.0",
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.0",
+    "typescript": "^5.7.3"
+  }
+}
