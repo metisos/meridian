@@ -30,9 +30,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Don't pin a `version:` here — package.json's `packageManager` field
+      # already pins pnpm@10.26.2 and `action-setup` errors if both are set.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - uses: actions/setup-node@v4
         with:
