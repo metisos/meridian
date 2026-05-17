@@ -6,6 +6,36 @@ import { EXPLAINERS } from "@/lib/explainers";
 import { Pill } from "./atoms";
 import { InfoTip } from "./InfoTip";
 
+/* Provenance timestamps need to show date when the entry isn't from today —
+   otherwise yesterday's 22:00 looks the same as today's 22:00 in the UI.
+   Colors muted gray for fresh entries, warm amber when older than 6h. */
+function formatProvTime(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  const now = new Date();
+  const sameDay =
+    d.getUTCFullYear() === now.getUTCFullYear() &&
+    d.getUTCMonth() === now.getUTCMonth() &&
+    d.getUTCDate() === now.getUTCDate();
+  const yesterday = new Date(now.getTime() - 24 * 60 * 60_000);
+  const isYesterday =
+    d.getUTCFullYear() === yesterday.getUTCFullYear() &&
+    d.getUTCMonth() === yesterday.getUTCMonth() &&
+    d.getUTCDate() === yesterday.getUTCDate();
+  const hhmmss = d.toISOString().slice(11, 19);
+  if (sameDay) return hhmmss;
+  if (isYesterday) return `yest ${hhmmss}`;
+  return `${d.toISOString().slice(5, 10)} · ${hhmmss}`;
+}
+
+function relativeAgeColor(iso: string): string {
+  const ageMs = Date.now() - Date.parse(iso);
+  if (Number.isNaN(ageMs) || ageMs < 0) return "var(--fg-3)";
+  const sixHoursMs = 6 * 60 * 60_000;
+  if (ageMs > sixHoursMs) return "var(--warn)";
+  return "var(--fg-3)";
+}
+
 function timeAgo(iso: string): string {
   const sec = Math.floor((Date.now() - Date.parse(iso)) / 1000);
   if (sec < 60) return `${sec}s ago`;
@@ -588,8 +618,16 @@ function ActivityCard({
                   lineHeight: 1.4,
                 }}
               >
-                <div className="mono" style={{ fontSize: 10, color: "var(--fg-3)", marginBottom: 2 }}>
-                  {new Date(a.when).toISOString().slice(11, 19)} · {a.actor}
+                <div
+                  className="mono"
+                  style={{
+                    fontSize: 10,
+                    color: relativeAgeColor(a.when),
+                    marginBottom: 2,
+                  }}
+                  title={a.when}
+                >
+                  {formatProvTime(a.when)} · {a.actor}
                 </div>
                 <div style={{ color: "var(--fg-1)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   <span style={{ color: "var(--accent-2)", fontWeight: 500 }}>{a.action}</span>{" "}

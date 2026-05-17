@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { fetchInvestigations } from "@/lib/queries";
+import { appendProvenance } from "@/lib/provenance";
 import type { Investigation } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -110,6 +111,19 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   const steps = buildSteps(inv);
   const totalEstimated = steps.reduce((s, x) => s + x.duration_ms, 0);
+
+  // Log a provenance read for the investigation + each chain artifact the
+  // replay touches. This makes the "watching the agent work" demo backed by
+  // real ledger entries — every replay shows up in the audit log.
+  const touched = [
+    inv.investigation_uri,
+    ...inv.causal_chain.map((s) => s.artifact_uri),
+  ];
+  appendProvenance("agent-meridian-replay", "read", touched, {
+    source: "replay",
+    investigation_uri: inv.investigation_uri,
+    chain_length: inv.causal_chain.length,
+  });
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {

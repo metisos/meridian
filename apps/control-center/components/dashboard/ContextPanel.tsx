@@ -4,8 +4,26 @@ import { EXPLAINERS } from "@/lib/explainers";
 import { InfoTip } from "./InfoTip";
 import { LiveDot, Pill } from "./atoms";
 
+/* Renders an ISO timestamp so day-boundary changes are visible. Same shape as
+   the Overview Provenance card: "HH:MM:SS" when today, "yest HH:MM:SS" for
+   yesterday, "MM-DD · HH:MM:SS" otherwise. */
 function timeOnly(iso: string): string {
-  return new Date(iso).toISOString().slice(11, 19);
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  const now = new Date();
+  const sameDay =
+    d.getUTCFullYear() === now.getUTCFullYear() &&
+    d.getUTCMonth() === now.getUTCMonth() &&
+    d.getUTCDate() === now.getUTCDate();
+  const yesterday = new Date(now.getTime() - 24 * 60 * 60_000);
+  const isYesterday =
+    d.getUTCFullYear() === yesterday.getUTCFullYear() &&
+    d.getUTCMonth() === yesterday.getUTCMonth() &&
+    d.getUTCDate() === yesterday.getUTCDate();
+  const hhmmss = d.toISOString().slice(11, 19);
+  if (sameDay) return hhmmss;
+  if (isYesterday) return `yest ${hhmmss}`;
+  return `${d.toISOString().slice(5, 10)} · ${hhmmss}`;
 }
 
 export function ContextPanel({

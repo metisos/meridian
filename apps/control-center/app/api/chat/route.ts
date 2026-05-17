@@ -5,6 +5,7 @@ import { getGenAI } from "@/lib/gemini";
 import { buildChatContext } from "@/lib/chatContext";
 import { getSplunkMcp } from "@/lib/splunkMcp";
 import { prepareAttachments, type IncomingAttachment, type GeminiPart } from "@/lib/attachments";
+import { appendProvenance } from "@/lib/provenance";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -78,6 +79,14 @@ export async function POST(req: Request) {
           model: env.GEMINI_MODEL,
           cited: ctx.citedUris,
           tools_available: splunkClient ? ["splunk"] : [],
+        });
+
+        // Log a read provenance entry for every investigation the agent will
+        // ground this turn on. Fire-and-forget so chat latency is unaffected.
+        appendProvenance("agent-meridian-chat", "read", ctx.citedUris, {
+          source: "ask-meridian",
+          model: env.GEMINI_MODEL,
+          tool_surface: splunkClient ? ["splunk"] : [],
         });
 
         const result = await genai.models.generateContentStream({
